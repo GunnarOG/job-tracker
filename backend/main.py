@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
+from typing import Literal
 
 app = FastAPI()
 
@@ -7,6 +8,13 @@ class Application(BaseModel):
     company: str
     position: str
     status: str
+    
+class StatusUpdate(BaseModel):
+    status:Literal["Applied", "Interview", "Rejected"]
+    
+    @field_validator("status", mode="before")
+    def normalize_status(cls, value):
+        return value.capitalize()
     
 applications = [
         {
@@ -43,7 +51,13 @@ def delete_application(id:int):
     raise HTTPException(status_code = 404, detail= "item not found")
 
 @app.patch("/applications/{id}")
-def update_status(id:int):
+def update_status(id:int, incoming_status:StatusUpdate):
+    for application in applications:
+        if (application["id"] == id):
+            application["status"] = StatusUpdate.status
+            return("succesfully updated the status")
+        
+    raise HTTPException(status_code = 404, detail="item not found")
     
     
     
