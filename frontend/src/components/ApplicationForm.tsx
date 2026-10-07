@@ -1,1 +1,1 @@
-    
+    import type { Application } from "../types/Application";
