@@ -1,6 +1,6 @@
 import type { Application } from "../types/Application";
 
-async function getApplications(): Promise<Application[]> {
+export async function getApplications(): Promise<Application[]> {
   const response = await fetch("http://127.0.0.1:8000/applications");
   if (!response.ok) {
     throw new Error("Cannot retrieve Applications");
@@ -10,7 +10,7 @@ async function getApplications(): Promise<Application[]> {
   return data;
 }
 
-async function addApplication(
+export async function addApplication(
   newApplication: Application,
 ): Promise<Application> {
   const response = await fetch("http://127.0.0.1:8000/applications", {
@@ -27,7 +27,7 @@ async function addApplication(
   return createdApplication;
 }
 
-async function updateApplication(
+export async function updateApplication(
   id: number,
   status: string,
 ): Promise<Application> {
@@ -45,7 +45,7 @@ async function updateApplication(
   return updatedApplication;
 }
 
-async function deleteApplication(id: number): Promise<void> {
+export async function deleteApplication(id: number): Promise<void> {
   const response = await fetch(`http://127.0.0.1:8000/applications/${id}`, {
     method: "DELETE",
   });
